@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Three Cubes Decrypter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+  <style>
+    * {
+      font-family: 'Roboto', sans-serif;
+      margin-block-start: 0;
+      margin-block-end: 0;
+      margin-inline-start: 0;
+      margin-inline-end: 0;
+    }
+
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Extending style attribute */
+    .btn:hover,
+    .btn:focus {
+      box-shadow: 0 0.8em 0.8em -0.3em #5e94ec;
+      transform: translateY(-0.25em);
+    }
+
+
+    @media screen and (max-width: 767px) {
+      .form {
+        flex-direction: column !important;
+      }
+    }
+  </style>
+</head>
+
+<body style="background:#202124;">
+  <div style=" min-height:100vh; min-width:100vw;">
+    <div style="display:flex; justify-content:center; width:100%; height:15vh;">
+      <div style="display:flex; flex-direction:column; align-items:center; max-width:150px; padding:2rem;">
+        <img style="width:100%" src="logo_en.png" alt="">
+        <h1 style="font-size:1rem; font-weight:500; color:#e8eaed;">DECRYPTER</h1>
+      </div>
+    </div>
+    <div class="form" style="display:flex; flex-direction:row; height:80vh; width:100%;">
+      <div style="display:flex; flex-direction:column; flex:5; padding: 3rem;">
+        <h3 style="text-align:center; color:#e8eaed; font-size:1rem; ">Encrypted Text</h3>
+        <textarea id="encrypted-text"
+          style="height:100%; width:100%; background:#202124; color:#e8eaed; font-size:1rem;" name="preData"
+          id=""></textarea>
+      </div>
+      <div style="flex: 1; justify-content: center; align-items: center; display: flex;">
+        <button class="btn"
+          style="background:transparent; border: 1px solid #8ab4f8;  border-radius:5px; cursor:pointer;"
+          onclick="decrypt();">
+          <h2 style="font-size:1rem; font-weight:400; color:#8ab4f8; padding:0.25rem .5rem;">
+            MAGIC<br>BUTTON
+          </h2>
+        </button>
+      </div>
+      <div style="display:flex; flex-direction:column; flex:5; padding: 3rem;">
+        <h3 style="text-align:center; color:#e8eaed; font-size:1rem; ">Decrypted Text</h3>
+        <textarea id="decrypted-text"
+          style="height:100%; width:100%; background:#202124; color:#8ab4f8;; font-size:1rem;" name=" postData" id=""
+          readonly></textarea>
+      </div>
+    </div>
+  </div>
+  <script>
+    decrypt = () => {
+      const passphrase = 'slavaUkraine';
+      let data = [];
+      let result = [];
+      let input = document.querySelector("#encrypted-text").value;
+      let output = document.querySelector("#decrypted-text");
+      //populating array 
+      data = input.split(/\r?\n/);
+      //decrypting
+      data.forEach(email => {
+        const bytes = CryptoJS.AES.decrypt(email, passphrase);
+        const decryptedTxt = bytes.toString(CryptoJS.enc.Utf8);
+        result.push(`${decryptedTxt}`);
+      })
+      //
+      //
+      output.value = result.join(";\n")
+
+    }
+  </script>
+</body>
+
+</html>
