@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+  <style>
+    * {
+      font-family: 'Work Sans', sans-serif;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* REUSABLE CLASSES */
+
+    button{
+      background:#ff5722;
+      min-width: 200px;
+      max-width: 95%;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      border-radius: 10px; 
+      border:none; 
+      outline:none; 
+      border-radius:5px;
+    }
+
+    button:hover
+    {
+      background: #ff7944;
+    }
+
+    .overlay-background{
+      position:absolute; 
+      display:none; 
+      justify-content:center; 
+      align-items:center; 
+      top:0; 
+      bottom:0; 
+      margin: 0 auto; 
+      width: 100%; 
+      background:rgba(0, 0, 0, 0.3)
+    }
+
+    .overlay{
+      background:white; 
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    }
+    
+    .card{
+      width: 78%;
+      height: 90%;
+      
+      padding: 2rem; 
+      border-radius: 10px;
+      
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+      display: grid;
+      grid-template-rows: auto;
+      grid-template-columns: auto;
+
+      align-content: center;
+      justify-content: space-around;
+      align-items: center;
+      justify-items: center;
+    }
+
+    .checkbox-txt {
+      font-weight: 400;
+      margin: 0;
+    }
+
+    .checkbox-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .valid-error {
+      display: none;
+      font-size: .75rem;
+      font-weight: 600;
+      color: #ff5722;
+      margin: 0 0 5px 5px;
+    }
+
+    /* EXTENDING STYLE ATTRIBUTE */
+    input[type=email]:focus {
+      border-color: #ff5722;
+      box-shadow: 0 0 8px 0 #ff5722;
+    }
+  </style>
+</head>
+
+<body>
+  <section style="min-width: 100%; min-height: 100vh;display: flex;justify-content: center; align-items: center;">
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 800px;">
+      <div class="card">
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <div style="padding-bottom:1rem;">
+            <div style="display:flex; flex-direction:column; align-items:flex-start; padding-bottom:5px;">
+              <input
+                style="height:30px; width: 100%; border:2px solid #aaa; border-radius:4px; box-sizing:border-box; outline:none; font-weight:400; transition:.3s;"
+                id="emailField" type="email" placeholder="el.paštas@gmail.com" size="30" required>
+              <span id="valid-required" class="valid-error" style="padding-top:5px;">This field can not be empty.</span>
+              <span id="valid-symbols" class="valid-error" style="padding-top:5px;">These symbols can not be used: (<b>“‘/$&\;</b>)</span>
+            </div>
+            <div class="checkbox">
+              <div class="checkbox-container">
+                <input id="checkbox" type="checkbox">
+                <h5 class="checkbox-txt">I agree to subscribe to the newsletter.</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style=" display: flex; justify-content: center; align-items: center;">
+          <button onclick="onSubmit()">
+            <h3 style="font-size:1rem; font-weight:400; color:white;">Send</h3>
+          </button>
+        </div>
+      </div>
+      <div id="overlaySuccess" class="overlay-background">
+        <div class="overlay">
+          <h2 style="padding:3rem;">Thank you! We are sending you the package now!</h2>
+        </div>
+      </div>
+      <div id="overlayClientError" class="overlay-background">
+        <div class="overlay">
+          <h2 style="padding:3rem; color: #ff5722;">Please check weather your entry is correct</h2>
+        </div>
+      </div>
+      <div id="overlayServerError" class="overlay-background">
+        <div class="overlay">
+          <h2 style="padding:3rem; color: #ff5722;">Please try again in a couple of minutes.</h2>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- SOFT VALIDATION -->
+  <script>
+    const emailField = document.querySelector('#emailField');
+    const checkbox = document.querySelector('#checkbox');
+    const overlaySuccess = document.querySelector("#overlaySuccess");
+    const overlayClientError = document.querySelector("#overlayClientError");
+    const overlayServerError = document.querySelector("#overlayServerError");
+
+    const validationRequired = document.querySelector("#valid-required");
+    const validationSymbols = document.querySelector("#valid-symbols");
+
+    const regExp = /[“‘/$&\;]/g;
+
+    function validateInput() // : boolean
+    {
+      let isValid = true;
+      validationRequired.style.display = "none";
+      validationSymbols.style.display = "none";
+      
+      if(!emailField.value || emailField.value.length < 6)
+      {
+        validationRequired.style.display = "block";
+        isValid = false;
+      }
+      
+      if(emailField.value.match(regExp))
+      {
+        validationSymbols.style.display = "block";
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+
+  </script>
+  <!-- POSTING DATA -->
+  <script>
+    const URL = "https://utility.three-cubes.net/APIRedirect/RequestUADownload/EN";
+
+    function onSubmit() // : void
+    {
+      if(!validateInput())
+        return;
+
+      fetch(URL, {
+          method: "POST",
+          mode: "cors",
+          headers: 
+          {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({email: emailField.value, subscribeToNewsletter: checkbox.checked})
+        }
+      ).then(
+        (response) => 
+        {
+          if(response.ok)
+            onSuccess();
+
+          if(response.status >= 400 && response.status < 500 )
+            onClientError();
+
+          if(response.status >= 500)
+            onServerError();
+        }
+      ).catch( response => console.log(response)) 
+    }
+
+    function onSuccess()
+    {
+      overlaySuccess.style.display = "flex";
+      setTimeout(() => {
+        overlaySuccess.style.display = "none";
+      }, 5000);
+      emailField.value = "";
+      checkbox.checked = false;
+    }
+
+    function onClientError()
+    {
+      overlayClientError.style.display = "flex";
+      setTimeout(() => {
+        overlayClientError.style.display = "none";
+      }, 5000);
+      emailField.value = "";
+      checkbox.checked = false;
+    }
+
+    function onServerError()
+    {
+      overlayServerError.style.display = "flex";
+      setTimeout(() => {
+        overlayServerError.style.display = "none";
+      }, 5000);
+      emailField.value = "";
+      checkbox.checked = false;
+    }
+    
+  </script>
+  
+</body>
+</html>
