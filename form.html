@@ -22,7 +22,62 @@
     }
 
     /* REUSABLE CLASSES */
-    .checkbox {}
+
+    button{
+      background:#ff5722;
+      min-width: 200px;
+      max-width: 95%;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      border-radius: 10px; 
+      border:none; 
+      outline:none; 
+      border-radius:5px;
+    }
+
+    button:hover
+    {
+      background: #ff7944;
+    }
+
+    .overlay-background{
+      position:absolute; 
+      display:none; 
+      justify-content:center; 
+      align-items:center; 
+      top:0; 
+      bottom:0; 
+      margin: 0 auto; 
+      width: 100%; 
+      background:rgba(0, 0, 0, 0.3)
+    }
+
+    .overlay{
+      background:white; 
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    }
+    
+    .card{
+      width: 78%;
+      height: 90%;
+      
+      padding: 2rem; 
+      border-radius: 10px;
+      
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+      display: grid;
+      grid-template-rows: auto;
+      grid-template-columns: auto;
+
+      align-content: center;
+      justify-content: space-around;
+      align-items: center;
+      justify-items: center;
+    }
 
     .checkbox-txt {
       font-weight: 400;
@@ -52,167 +107,148 @@
 </head>
 
 <body>
-  <section style="min-width: 100%;min-height: 100vh;display: flex;justify-content: center;algn-items: center;">
+  <section style="min-width: 100%; min-height: 100vh;display: flex;justify-content: center; align-items: center;">
     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 800px;">
-      <div style="min-height: 260px; padding: 2rem; border-radius: 10px; box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
- ">
+      <div class="card">
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-          <div style="display: flex; justify-content: center;">
-            <h1 style="margin-top: 0;
-            font-weight: 400;">Pamokos parsisiuntimo forma</h1>
-          </div>
-          <div style="padding-bottom:1rem;">
-            <h4 style="margin: 0; padding-bottom: .5rem; font-weight: 400;">Mums svarbi Jūsų nuomonė!
-            </h4>
-            <h4 class="desc-details" style="margin: 0; font-weight: 300;">Galite pasirinkti, ar norite gauti
-              užklausas
-              apie kitus mūsų
-              produktus į savo el. paštą
-              susisiekimo ir
-              rinkodaros tikslais. Tai svarbu ir skirta tam, kad galėtume susisiekti su Jumis - išgirsti Jūsų nuomonę,
-              kaip
-              sekėsi savarankiškai vesti pamoką ir padėti iškilus klausimams.</h4>
-          </div>
           <div style="padding-bottom:1rem;">
             <div style="display:flex; flex-direction:column; align-items:flex-start; padding-bottom:5px;">
               <input
                 style="height:30px; width: 100%; border:2px solid #aaa; border-radius:4px; box-sizing:border-box; outline:none; font-weight:400; transition:.3s;"
-                id="email" type="email" placeholder="el.paštas@gmail.com" size="30" required>
-              <span id="valid-required" class="valid-error" style="padding-top:5px;">Ši reikšmė negali
-                būti tuščia.</span>
-              <span id="valid-symbols" class="valid-error" style="padding-top:5px;">Negalima naudoti
-                (<b>“‘/$&\;</b>)</span>
+                id="emailField" type="email" placeholder="el.paštas@gmail.com" size="30" required>
+              <span id="valid-required" class="valid-error" style="padding-top:5px;">Ši reikšmė negali būti tuščia.</span>
+              <span id="valid-symbols" class="valid-error" style="padding-top:5px;">Negalima naudoti (<b>“‘/$&\;</b>)</span>
             </div>
             <div class="checkbox">
               <div class="checkbox-container">
                 <input id="checkbox" type="checkbox">
-                <h5 class="checkbox-txt">Sutinku gauti užklausas rinkodaros
-                  tinkslais.</h5>
+                <h5 class="checkbox-txt">Sutinku gauti užklausas rinkodaros tikslais.</h5>
               </div>
-              <span id="valid-box" class="valid-error">Pažymėti varnelę
-                būtina.</span>
             </div>
-            <!-- <div class="checkbox">
-              <div class="checkbox-container">
-                <input type="checkbox">
-                <h5 class="checkbox-txt">Sutinku ....</h5>
-              </div>
-              <span class="valid-error">Pažymėti varnelę
-                būtina.</span>
-            </div> -->
           </div>
         </div>
         <div style=" display: flex; justify-content: center; align-items: center;">
-          <button
-            style="display: flex; align-items: center; justify-content: center; border-radius: 10px; width: 200px; height: 40px; background:#ff5722; border:none; outline:none; border-radius:5px;"
-            onclick="submit(event)">
+          <button onclick="onSubmit()">
             <h3 style="font-size:1rem; font-weight:400; color:white;">Siųsti</h3>
           </button>
         </div>
       </div>
-      <div id="overlay"
-        style="position:absolute; display:none; justify-content:center; align-items:center; top:0; bottom:0; margin: 0 auto; width: 100%; background:rgba(0, 0, 0, 0.3)">
-        <div
-          style="background:white; box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;">
-          <h2 style="padding:3rem;">Forma sėkmingai išsiųsta !</h2>
+      <div id="overlaySuccess" class="overlay-background">
+        <div class="overlay">
+          <h2 style="padding:3rem;">Ačiū! Siunčiame Jums laišką!</h2>
+        </div>
+      </div>
+      <div id="overlayClientError" class="overlay-background">
+        <div class="overlay">
+          <h2 style="padding:3rem; color: #ff5722;">Patikrinkite ar gerai įvedėte duomenis</h2>
+        </div>
+      </div>
+      <div id="overlayServerError" class="overlay-background">
+        <div class="overlay">
+          <h2 style="padding:3rem; color: #ff5722;">Pabandykite pakartoti už kelių minučių.</h2>
         </div>
       </div>
     </div>
   </section>
-  <!-- POSTING DATA -->
-  <script>
-    const sheetId = "14a45d91-9782-4bd3-8219-6103436e44db";
-    const URL = `https://sheet.best/api/sheets/${sheetId}`;
-    const overlay = document.querySelector("#overlay");
-
-    let email = document.querySelector('input[type="email"]');
-    let hashedEmail = "";
-    let originalText = "";
-    let validated = false;
-
-    //Posting email to GoogleSheet
-    submit = (e) => {
-      //Encrypting email to secure emails
-      validation();
-
-      if (validated === true) {
-        emailEncryption(email.value);
-        //DATA
-        const data = {
-          EMAILS: hashedEmail
-        };
-        //POST Method
-        fetch(URL, {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        })
-          .then((r) => r.json())
-          .then((data) => {
-            //200 POPUP
-            overlay.style.display = "flex";
-            setTimeout(() => {
-              overlay.style.display = "none";
-            }, 3000);
-            //reset
-            email.value = "";
-            checkbox.checked = false;
-          })
-          .catch((error) => {
-            // Errors are reported there
-            console.log(error);
-          });
-      }
-      else {
-        validation();
-      }
-    }
-    //using specific passpahrase to encrypt emails / UTF8 supported
-    emailEncryption = (str) => {
-      const passphrase = 'slavaUkraine';
-      return hashedEmail = CryptoJS.AES.encrypt(str, passphrase).toString();
-    }
-  </script>
   <!-- SOFT VALIDATION -->
   <script>
-    validation = () => {
-      const email = document.querySelector('#email');
-      const checkbox = document.querySelector('#checkbox');
-      const box = document.querySelector('#valid-box');
-      const required = document.querySelector("#valid-required");
-      const symbols = document.querySelector("#valid-symbols");
-      const regExp = /[“‘/$&\;]/g;
-      const inputs = [email, checkbox];
-      let msgArr = [];
+    const emailField = document.querySelector('#emailField');
+    const checkbox = document.querySelector('#checkbox');
+    const overlaySuccess = document.querySelector("#overlaySuccess");
+    const overlayClientError = document.querySelector("#overlayClientError");
+    const overlayServerError = document.querySelector("#overlayServerError");
 
-      required.style.display = "none";
-      box.style.display = "none";
-      symbols.style.display = "none";
+    const validationRequired = document.querySelector("#valid-required");
+    const validationSymbols = document.querySelector("#valid-symbols");
 
-      inputs.map((input) => {
-        if (email.value === "") msgArr.push("1");
-        if (!checkbox.checked) msgArr.push("2");
-        if (email.value.match(regExp)) msgArr.push("3");
+    const regExp = /[“‘/$&\;]/g;
 
-        msgArr = [...new Set(msgArr)];
-        if (msgArr.length === 0) {
-
-          return validated = true;
-        }
-
-      });
-      msgArr.map((number) => {
-        console.log(required);
-        if (number === "1") required.style.display = "block";
-        if (number === "2") box.style.display = "block";
-        if (number === "3") symbols.style.display = "block";
-      });
+    function validateInput() // : boolean
+    {
+      let isValid = true;
+      validationRequired.style.display = "none";
+      validationSymbols.style.display = "none";
+      
+      if(!emailField.value || emailField.value.length < 6)
+      {
+        validationRequired.style.display = "block";
+        isValid = false;
+      }
+      
+      if(emailField.value.match(regExp))
+      {
+        validationSymbols.style.display = "block";
+        isValid = false;
+      }
+      
+      return isValid;
     }
 
   </script>
-</body>
+  <!-- POSTING DATA -->
+  <script>
+    const URL = "https://utility.three-cubes.net/APIRedirect/RequestUADownload";
 
+    function onSubmit() // : void
+    {
+      if(!validateInput())
+        return;
+
+      fetch(URL, {
+          method: "POST",
+          mode: "cors",
+          headers: 
+          {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({email: emailField.value, subscribeToNewsletter: checkbox.checked})
+        }
+      ).then(
+        (response) => 
+        {
+          if(response.ok)
+            onSuccess();
+
+          if(response.status >= 400 && response.status < 500 )
+            onClientError();
+
+          if(response.status >= 500)
+            onServerError();
+        }
+      ).catch( response => console.log(response)) 
+    }
+
+    function onSuccess()
+    {
+      overlaySuccess.style.display = "flex";
+      setTimeout(() => {
+        overlaySuccess.style.display = "none";
+      }, 5000);
+      emailField.value = "";
+      checkbox.checked = false;
+    }
+
+    function onClientError()
+    {
+      overlayClientError.style.display = "flex";
+      setTimeout(() => {
+        overlayClientError.style.display = "none";
+      }, 5000);
+      emailField.value = "";
+      checkbox.checked = false;
+    }
+
+    function onServerError()
+    {
+      overlayServerError.style.display = "flex";
+      setTimeout(() => {
+        overlayServerError.style.display = "none";
+      }, 5000);
+      emailField.value = "";
+      checkbox.checked = false;
+    }
+    
+  </script>
+  
+</body>
 </html>
